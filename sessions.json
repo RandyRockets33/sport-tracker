@@ -1,0 +1,45 @@
+{
+  "withdrawn": 50.0,
+  "sessions": [
+    {
+      "id": 1,
+      "date": "2026-05-27",
+      "label": "Session 1 \u2014 Randy Manual",
+      "trader": "Randy",
+      "start": 125.0,
+      "end": 525.0,
+      "net": 400.0,
+      "note": "Roland Garros tennis. Randy ran $125 \u2192 $525 manually. +320%."
+    },
+    {
+      "id": 2,
+      "date": "2026-05-27",
+      "label": "Session 2 \u2014 Sport Live",
+      "trader": "Sport",
+      "start": 525.0,
+      "end": null,
+      "net": null,
+      "note": "Sport S/R Window Trader. Live session. $50 withdrawn via Apple Pay (profit taken)."
+    },
+    {
+      "id": 3,
+      "date": "2026-05-27",
+      "label": "Session 3 \u2014 Sport Active",
+      "trader": "Sport",
+      "start": 790.86,
+      "end": null,
+      "net": null,
+      "note": "$200 allocation. Active in/out. Lock 5-10\u00a2. Peel half at +20\u00a2. Dogs: +8\u00a2 exit. Sell on uptick."
+    },
+    {
+      "id": 4,
+      "date": "2026-05-27",
+      "label": "Session 4 \u2014 Randy Recovery",
+      "trader": "Randy",
+      "start": 409.54,
+      "end": 722.32,
+      "net": 312.78,
+      "note": "Randy manually ran it back from $409 \u2192 $722 on one match. +$313. Blueprint."
+    }
+  ]
+}

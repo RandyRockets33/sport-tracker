@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GhostDawg · Sport</title>
+<style>
+:root{
+  --bg:#08090d;--surface:#0f1117;--surface2:#13151e;--surface3:#181b26;
+  --border:#1e2235;--border2:#252a3a;
+  --text:#e8eaf0;--muted:#5a6380;--muted2:#3a4060;
+  --green:#00e87c;--green-dim:#00e87c22;--green-border:#00e87c44;
+  --red:#ff4d6a;--red-dim:#ff4d6a22;--red-border:#ff4d6a44;
+  --gold:#ffd24c;--gold-dim:#ffd24c22;--gold-border:#ffd24c44;
+  --blue:#4d9eff;--blue-dim:#4d9eff22;--blue-border:#4d9eff44;
+  --purple:#a78bfa;
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;
+  --font:-apple-system,"SF Pro Display","Segoe UI",sans-serif;
+  --mono:"SF Mono","Fira Code","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── Header ── */
+header{position:sticky;top:0;z-index:200;background:#08090df5;backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{font-size:22px}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:-.4px}
+.brand-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:14px}
+.live-badge{display:flex;align-items:center;gap:6px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.5px}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1.8s ease infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 #00e87c55}50%{opacity:.5;box-shadow:0 0 0 4px #00e87c00}}
+.ts{font-size:11px;color:var(--muted)}
+
+/* ── Layout ── */
+.app{max-width:1160px;margin:0 auto;padding:24px 20px 80px}
+
+/* ── Section headers ── */
+.section{display:flex;align-items:center;gap:10px;margin:32px 0 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted)}
+.section::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-count{font-size:11px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--muted2);margin-left:2px}
+
+/* ── Stat grid ── */
+.stat-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px}
+@media(max-width:800px){.stat-grid{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.stat-card.gold::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.stat-card.green::after{background:linear-gradient(90deg,var(--green),transparent)}
+.stat-card.red::after{background:linear-gradient(90deg,var(--red),transparent)}
+.stat-card.blue::after{background:linear-gradient(90deg,var(--blue),transparent)}
+.stat-card.purple::after{background:linear-gradient(90deg,var(--purple),transparent)}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin-bottom:10px}
+.stat-value{font-family:var(--mono);font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.stat-value.hero{font-size:42px}
+.stat-value.gold{color:var(--gold)}
+.stat-value.green{color:var(--green)}
+.stat-value.red{color:var(--red)}
+.stat-value.blue{color:var(--blue)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:6px}
+.stat-sub b{color:var(--text)}
+
+/* ── Session history ── */
+.session-list{display:flex;flex-direction:column;gap:8px}
+.session-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;gap:16px}
+.session-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.session-num.randy{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-border)}
+.session-num.sport{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border)}
+.session-num.live{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);animation:blink 2s ease infinite}
+.session-info{flex:1}
+.session-label{font-size:13px;font-weight:700}
+.session-note{font-size:11px;color:var(--muted);margin-top:2px}
+.session-stats{text-align:right;flex-shrink:0}
+.session-net{font-family:var(--mono);font-size:18px;font-weight:800}
+.session-range{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── Position cards ── */
+.pos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.pos-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:transform .15s,box-shadow .15s}
+.pos-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px #00000055}
+.pos-top-bar{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.pos-match-name{font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.live-pip{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.8s ease infinite;flex-shrink:0}
+.trader-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.trader-pill.sport{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border)}
+.trader-pill.randy{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-border)}
+.pos-body{padding:16px}
+.pos-player-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.pos-flag{font-size:30px;line-height:1}
+.pos-player-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.pos-league{font-size:11px;color:var(--muted);margin-top:2px}
+.pos-meta{font-size:12px;color:var(--muted);margin-bottom:10px}
+.pos-meta span{color:var(--text);font-weight:600}
+.pos-value-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.pos-current{font-family:var(--mono);font-size:24px;font-weight:800}
+.pos-pnl{font-size:13px;font-weight:700}
+.chance-bar-wrap{margin-bottom:12px}
+.chance-labels{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.chance-bar{height:4px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.chance-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.eq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.eq-box{border-radius:var(--radius-sm);padding:10px 12px;text-align:center}
+.eq-box.w{background:var(--green-dim);border:1px solid var(--green-border)}
+.eq-box.l{background:var(--red-dim);border:1px solid var(--red-border)}
+.eq-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.eq-title.w{color:var(--green)}
+.eq-title.l{color:var(--red)}
+.eq-amount{font-family:var(--mono);font-size:16px;font-weight:800}
+.eq-amount.w{color:var(--green)}
+.eq-amount.l{color:var(--red)}
+.eq-full{font-size:10px;color:var(--muted)}
+.cashout-btn{display:block;width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);text-align:center;font-size:12px;font-weight:700;color:var(--text);text-decoration:none;transition:background .15s,border-color .15s;letter-spacing:.3px}
+.cashout-btn:hover{background:var(--surface3);border-color:var(--muted2)}
+
+/* ── Tables ── */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--surface2)}
+th{padding:11px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+.empty-row td{text-align:center;color:var(--muted);padding:28px;font-size:13px}
+
+/* ── Pills & badges ── */
+.pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.pill.buy{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border)}
+.pill.sell{background:var(--red-dim);color:var(--red);border:1px solid var(--red-border)}
+.pill.win{background:var(--green-dim);color:var(--green)}
+.pill.loss{background:var(--red-dim);color:var(--red)}
+.pill.pending{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border)}
+.pill.filled{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border)}
+.pill.partial{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-border)}
+
+/* ── Util ── */
+.green{color:var(--green)}.red{color:var(--red)}.gold{color:var(--gold)}.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.bold{font-weight:700}
+#loading{text-align:center;padding:80px;color:var(--muted);font-size:15px}
+#content{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-icon">👻</span>
+    <div>
+      <div class="brand-name">GhostDawg Sport</div>
+      <div class="brand-sub">Polymarket Tracker</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="ts" id="ts">—</span>
+    <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+  </div>
+</header>
+
+<div class="app">
+  <div id="loading">Loading…</div>
+  <div id="content">
+
+    <!-- Account Overview -->
+    <div class="section">Account Overview</div>
+    <div class="stat-grid">
+      <div class="stat-card gold" id="card-total"></div>
+      <div class="stat-card green" id="card-pnl"></div>
+      <div class="stat-card blue" id="card-deployed"></div>
+      <div class="stat-card purple" id="card-sport"></div>
+    </div>
+
+    <!-- Session History -->
+    <div class="section">Session History <span class="section-count" id="session-count"></span></div>
+    <div class="session-list" id="session-list"></div>
+
+    <!-- Open Positions -->
+    <div class="section">Open Positions <span class="section-count" id="pos-count"></span></div>
+    <div class="pos-grid" id="pos-grid"></div>
+
+    <!-- Closed Trades -->
+    <div class="section">Closed Trades <span class="section-count" id="closed-count"></span></div>
+    <div class="table-card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Time (ET)</th><th>Match</th><th>Side</th>
+            <th>Entry</th><th>Exit</th><th>Bet</th>
+            <th>P&amp;L</th><th>Running</th><th>Result</th>
+          </tr></thead>
+          <tbody id="closed-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Open Orders -->
+    <div class="section">Open Orders <span class="section-count" id="orders-count"></span></div>
+    <div class="table-card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Time (ET)</th><th>$ Amount</th><th>Match</th>
+            <th>Betting On</th><th>Side</th><th>Price</th>
+            <th>Filled / Total</th><th>Status</th>
+          </tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const money = (n, sign=false) => {
+  if (n == null || isNaN(n)) return '—';
+  const abs = Math.abs(n).toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2});
+  if (!sign) return n < 0 ? '-' + abs : abs;
+  return (n >= 0 ? '+' : '-') + abs;
+};
+const pct = (n, sign=false) => n == null ? '—' : (sign && n>=0?'+':'') + n.toFixed(1) + '%';
+const pc  = n => n >= 0 ? 'green' : 'red';
+const et  = iso => {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleString('en-US',{timeZone:'America/New_York',month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true}); }
+  catch { return iso.slice(11,16)+' UTC'; }
+};
+
+// ── Account cards ─────────────────────────────────────────────────────────────
+function renderAccount(data) {
+  const a  = data.account || {};
+  const ch = data.chud    || {};
+  const total  = a.total_balance || 0;
+  const pnl    = a.total_pnl    || 0;
+  const roi    = a.total_roi    || 0;
+  const bp     = a.buying_power || 0;
+  const unr    = a.total_unrealized || 0;
+  const mr     = a.margin_requirement || 0;
+  const dep    = (ch.positions||[]).reduce((s,p)=>s+(p.cost||0),0);
+  const avail  = Math.max(0, 300 - dep);
+  const snet   = (total + withdrawn) - 525;  // Sport took over at $525
+  const sessions_data = data.sessions || {};
+  const withdrawn = sessions_data.withdrawn || 0;
+
+  $('card-total').innerHTML = `
+    <div class="stat-label">Total Account Value</div>
+    <div class="stat-value hero gold">${money(total)}</div>
+    <div class="stat-sub">Free <b>${money(bp)}</b> · In bets <b>${money(mr)}</b> · Equity <b class="${pc(unr)}">${money(unr,true)}</b></div>`;
+
+  $('card-pnl').innerHTML = `
+    <div class="stat-label">Total P&amp;L</div>
+    <div class="stat-value ${pc(pnl)}">${money(pnl,true)}</div>
+    <div class="stat-sub">Started <b>$125.00</b> · Withdrawn <b class="green">${money(withdrawn)}</b> · ROI <b class="${pc(roi)}">${pct(roi,true)}</b></div>`;
+
+  $('card-deployed').innerHTML = `
+    <div class="stat-label">Sport Deployed</div>
+    <div class="stat-value blue">${money(dep)}<span style="font-size:14px;opacity:.45;margin-left:4px">/ $300</span></div>
+    <div class="stat-sub"><b>${ch.position_count||0}</b> positions · <b>${money(avail)}</b> available</div>`;
+
+  $('card-sport').innerHTML = `
+    <div class="stat-label">Sport Net (vs $525)</div>
+    <div class="stat-value ${pc(snet)}">${money(snet,true)}</div>
+    <div class="stat-sub">Realized <b class="${pc(ch.bot_realized_pnl||0)}">${money(ch.bot_realized_pnl||0,true)}</b></div>`;
+}
+
+// ── Session history ───────────────────────────────────────────────────────────
+async function renderSessions(liveTotal) {
+  let sessions = [];
+  try {
+    const r = await fetch(`sessions.json?_=${Date.now()}`);
+    const sdata = await r.json();
+    sessions = sdata.sessions || [];
+    // Pass withdrawn into live data for card rendering
+    if (!data.sessions) data.sessions = {};
+    data.sessions.withdrawn = sdata.withdrawn || 0;
+  } catch { }
+
+  $('session-count').textContent = `— ${sessions.length}`;
+  if (!sessions.length) { $('session-list').innerHTML = '<div style="color:var(--muted);font-size:13px">No sessions recorded yet.</div>'; return; }
+
+  $('session-list').innerHTML = sessions.map(s => {
+    const isLive = s.end === null;
+    const end    = isLive ? liveTotal : s.end;
+    const net    = isLive ? liveTotal - s.start : s.net;
+    const cls    = s.trader === 'Randy' ? 'randy' : (isLive ? 'live' : 'sport');
+    const netCls = net >= 0 ? 'green' : 'red';
+    return `
+      <div class="session-row">
+        <div class="session-num ${cls}">${s.id}</div>
+        <div class="session-info">
+          <div class="session-label">${s.label}${isLive?' <span style="color:var(--gold);font-size:10px;font-weight:700">● LIVE</span>':''}</div>
+          <div class="session-note">${s.note}</div>
+        </div>
+        <div class="session-stats">
+          <div class="session-net ${netCls}">${money(net,true)}</div>
+          <div class="session-range">${money(s.start)} → ${isLive ? '<span class="gold">'+money(end)+'</span>' : money(end)}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Position cards ────────────────────────────────────────────────────────────
+function renderPositions(data) {
+  const pos = (data.portfolio||{}).positions||[];
+  $('pos-count').textContent = `— ${pos.length}`;
+  if (!pos.length) {
+    $('pos-grid').innerHTML = `<div style="grid-column:1/-1;color:var(--muted);text-align:center;padding:32px;font-size:13px">No open positions</div>`;
+    return;
+  }
+  $('pos-grid').innerHTML = pos.map(p => {
+    const unr   = p.unrealized || 0;
+    const cost  = p.cost || 0;
+    const cv    = p.cash_value || 0;
+    const qty   = p.qty || 0;
+    const entry = p.avg_entry || 0;
+    const curr  = p.current_price || entry;
+    const toWin = qty * 1.0;
+    const ppct  = cost > 0 ? (unr/cost*100) : 0;
+    const ch    = p.side==='LONG' ? curr*100 : (1-curr)*100;
+    const bet   = p.betting_on || p.outcome || p.match || '';
+    const wp    = p.side==='LONG' ? curr : 1-curr;
+    const lp    = 1-wp;
+    const rW    = p.side==='LONG' ? toWin-cost : cost;
+    const rL    = p.side==='LONG' ? -cost : -(toWin-cost);
+    const wEq   = rW*wp, lEq = rL*lp;
+    const tPill = p.trader==='Randy'
+      ? '<span class="trader-pill randy">👤 Randy</span>'
+      : '<span class="trader-pill sport">🤖 Sport</span>';
+
+    return `
+    <div class="pos-card">
+      <div class="pos-top-bar">
+        <div class="pos-match-name"><span class="live-pip"></span>${p.match||'—'}</div>
+        ${tPill}
+      </div>
+      <div class="pos-body">
+        <div class="pos-player-row">
+          <span class="pos-flag">${p.country_flag||'🎾'}</span>
+          <div>
+            <div class="pos-player-name">${bet}</div>
+            <div class="pos-league">${p.league||'Tennis'}</div>
+          </div>
+        </div>
+        <div class="pos-meta">Cost <span>${money(cost)}</span> &nbsp;·&nbsp; To win <span class="green">${money(toWin)}</span></div>
+        <div class="pos-value-row">
+          <span class="pos-current mono">${money(cv)}</span>
+          <span class="pos-pnl ${pc(unr)}">${money(unr,true)} (${pct(ppct,true)})</span>
+        </div>
+        <div class="chance-bar-wrap">
+          <div class="chance-labels">
+            <span class="gold bold">${ch.toFixed(0)}% chance</span>
+            <span class="muted">${(entry*100).toFixed(0)}¢ entry &nbsp;·&nbsp; ${(curr*100).toFixed(0)}¢ now</span>
+          </div>
+          <div class="chance-bar">
+            <div class="chance-fill" style="width:${Math.min(100,ch).toFixed(0)}%;background:${ch>=50?'var(--green)':'var(--gold)'}"></div>
+          </div>
+        </div>
+        <div class="eq-grid">
+          <div class="eq-box w">
+            <div class="eq-title w">✅ Wins (${(wp*100).toFixed(0)}%)</div>
+            <div class="eq-amount w">${money(wEq,true)}</div>
+            <div class="eq-full">full: ${money(rW,true)}</div>
+          </div>
+          <div class="eq-box l">
+            <div class="eq-title l">❌ Loses (${(lp*100).toFixed(0)}%)</div>
+            <div class="eq-amount l">${money(lEq,true)}</div>
+            <div class="eq-full">full: ${money(rL,true)}</div>
+          </div>
+        </div>
+        <a class="cashout-btn" href="${p.url||'https://polymarket.us'}" target="_blank">Cash Out on Polymarket →</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Closed trades ─────────────────────────────────────────────────────────────
+function renderClosed(data) {
+  const trades = ((data.chud||{}).closed_trades||[]).slice().reverse();
+  $('closed-count').textContent = `— ${trades.length}`;
+  if (!trades.length) {
+    $('closed-body').innerHTML = `<tr class="empty-row"><td colspan="9">No closed trades yet</td></tr>`;
+    return;
+  }
+  $('closed-body').innerHTML = trades.map(t => {
+    const pnl = t.pnl || 0;
+    const win = pnl >= 0;
+    return `<tr>
+      <td class="muted" style="white-space:nowrap;font-size:12px">${et(t.closed_at||t.time)}</td>
+      <td class="bold" style="font-size:12px">${(t.match||'').replace(/ vs\.? /,' v ')}</td>
+      <td><span class="pill ${(t.side||'long')==='long'?'buy':'sell'}">${(t.side||'').toUpperCase()}</span></td>
+      <td class="mono">${t.avg_entry!=null?(t.avg_entry*100).toFixed(0)+'¢':'—'}</td>
+      <td class="mono">${t.exit_price!=null?(t.exit_price*100).toFixed(0)+'¢':'—'}</td>
+      <td class="mono">${money(t.cost||t.bet)}</td>
+      <td class="mono bold ${pc(pnl)}">${money(pnl,true)}</td>
+      <td class="mono ${pc(t.cum_pnl_after||0)}">${money(t.cum_pnl_after||0,true)}</td>
+      <td><span class="pill ${win?'win':'loss'}">${win?'WIN':'LOSS'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Open orders ───────────────────────────────────────────────────────────────
+function renderOrders(data) {
+  const orders = ((data.portfolio||{}).orders||[])
+    .slice().sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+  $('orders-count').textContent = `— ${orders.length}`;
+  if (!orders.length) {
+    $('orders-body').innerHTML = `<tr class="empty-row"><td colspan="8">No open orders</td></tr>`;
+    return;
+  }
+  $('orders-body').innerHTML = orders.map(o => {
+    const qty    = o.qty    || 0;
+    const filled = o.filled || 0;
+    const price  = o.price  || 0;
+    const dollar = price * qty;
+    const fpct   = qty > 0 ? (filled/qty*100).toFixed(0) : 0;
+    const status = filled >= qty && qty > 0
+      ? '<span class="pill filled">Filled</span>'
+      : filled > 0
+        ? `<span class="pill partial">Partial ${fpct}%</span>`
+        : '<span class="pill pending">Pending</span>';
+    return `<tr>
+      <td class="muted" style="white-space:nowrap;font-size:12px">${et(o.created_at)}</td>
+      <td class="mono gold bold" style="font-size:15px">${money(dollar)}</td>
+      <td class="bold" style="font-size:12px">${o.match||'—'}</td>
+      <td style="font-size:12px">${o.outcome||'—'}</td>
+      <td><span class="pill ${o.side==='BUY'?'buy':'sell'}">${o.side||'—'}</span></td>
+      <td class="mono bold">$${price.toFixed(2)}</td>
+      <td class="mono"><span class="${filled>0?'green':'muted'}">${filled}</span><span class="muted"> / ${qty}</span></td>
+      <td>${status}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Main loop ─────────────────────────────────────────────────────────────────
+let boot = true;
+async function tick() {
+  try {
+    const r = await fetch(`live.json?_=${Date.now()}`);
+    if (!r.ok) throw new Error(`${r.status}`);
+    const data = await r.json();
+
+    if (data.updated) $('ts').textContent = 'Updated ' + et(data.updated);
+
+    renderAccount(data);
+    await renderSessions((data.account||{}).total_balance||0);
+    renderPositions(data);
+    renderClosed(data);
+    renderOrders(data);
+
+    if (boot) { $('loading').style.display='none'; $('content').style.display='block'; boot=false; }
+  } catch(e) {
+    if (boot) $('loading').textContent = 'Connecting…';
+    console.error(e);
+  }
+}
+tick();
+setInterval(tick, 15000);
+</script>
+</body>
+</html>
