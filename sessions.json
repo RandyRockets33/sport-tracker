@@ -1,5 +1,5 @@
 {
-  "withdrawn": 50.0,
+  "withdrawn": 502.0,
   "sessions": [
     {
       "id": 1,
@@ -9,37 +9,47 @@
       "start": 125.0,
       "end": 525.0,
       "net": 400.0,
-      "note": "Roland Garros tennis. Randy ran $125 \u2192 $525 manually. +320%."
+      "note": "Randy ran $125 \u2192 $525 manually on Roland Garros tennis. Blueprint session."
     },
     {
       "id": 2,
       "date": "2026-05-27",
-      "label": "Session 2 \u2014 Sport Live",
+      "label": "Session 2 \u2014 Sport (Overnight)",
       "trader": "Sport",
       "start": 525.0,
-      "end": null,
-      "net": null,
-      "note": "Sport S/R Window Trader. Live session. $50 withdrawn via Apple Pay (profit taken)."
+      "end": 176.0,
+      "net": -349.0,
+      "note": "Sport losses: Federico Cina -$147, Elias Ymer -$119, Lorenzo Giustino -$43, Davidovich -$40. Stop losses too slow on ITF markets. Rule violations fixed."
     },
     {
       "id": 3,
       "date": "2026-05-27",
-      "label": "Session 3 \u2014 Sport Active",
-      "trader": "Sport",
-      "start": 790.86,
-      "end": null,
-      "net": null,
-      "note": "$200 allocation. Active in/out. Lock 5-10\u00a2. Peel half at +20\u00a2. Dogs: +8\u00a2 exit. Sell on uptick."
+      "label": "Session 3 \u2014 Khachanov Win",
+      "trader": "Randy",
+      "start": 176.0,
+      "end": 221.0,
+      "net": 45.0,
+      "note": "Karen Khachanov won. +$45."
     },
     {
       "id": 4,
       "date": "2026-05-27",
-      "label": "Session 4 \u2014 Randy Recovery",
+      "label": "Session 4 \u2014 Joao Fonseca \ud83d\udd25",
       "trader": "Randy",
-      "start": 409.54,
-      "end": 722.32,
-      "net": 312.78,
-      "note": "Randy manually ran it back from $409 \u2192 $722 on one match. +$313. Blueprint."
+      "start": 221.0,
+      "end": 722.0,
+      "net": 501.0,
+      "note": "Randy bought Joao Fonseca at $451.61. Sold for +$721.35. The move of the day."
+    },
+    {
+      "id": 5,
+      "date": "2026-05-27",
+      "label": "Session 5 \u2014 Randy Withdrawal",
+      "trader": "Randy",
+      "start": 722.0,
+      "end": null,
+      "net": null,
+      "note": "$452 withdrawal in progress. $50 withdrawn earlier. Total withdrawn: $502. Balance: $270.32 on Polymarket."
     }
   ]
 }

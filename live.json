@@ -8,8 +8,8 @@
     "total_unrealized": 0,
     "sport_allocation": 300.0,
     "starting_deposit": 125.0,
-    "total_pnl": 647.32,
-    "total_roi": 517.86,
+    "total_pnl": 1099.32,
+    "total_roi": 879.46,
     "total_realized": 0,
     "total_cost": 0
   },
@@ -373,5 +373,5 @@
       }
     ]
   },
-  "updated": "2026-05-27T19:29:27.860801+00:00"
+  "updated": "2026-05-27T19:31:57.139074+00:00"
 }
